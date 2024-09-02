@@ -22,6 +22,10 @@ const schema = new Schema({
         required: true,
         select: false
     },
+    coins: {
+        type: Number,
+        required: true,
+    },
     role: {
         required: true,
         type: String,

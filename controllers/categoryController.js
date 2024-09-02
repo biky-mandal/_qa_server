@@ -1,5 +1,6 @@
 import { TryCatch } from "../middlewares/error.js";
 import { Category } from "../models/category.js";
+import { SubCategory } from "../models/subCategory.js";
 
 const createCategory = TryCatch(async (req, res, next) => {
     const { name } = req.body;
@@ -29,4 +30,16 @@ const fetchCategories = TryCatch(async (req, res, next) => {
     })
 })
 
-export { createCategory, fetchCategories }
+const allCategoriesWithSubCategories = TryCatch(async (req, res, next) => {
+
+    let _categories = await Category.find({});
+    let _subcategories = await SubCategory.find().populate('category', 'name');
+
+    res.status(200).json({
+        success: true,
+        categories: _categories,
+        subcategories: _subcategories
+    })
+})
+
+export { createCategory, fetchCategories, allCategoriesWithSubCategories }

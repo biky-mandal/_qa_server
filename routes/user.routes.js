@@ -1,7 +1,7 @@
 import express from 'express';
 import { validateRegister, validateLogin, is_Request_Validated } from '../middlewares/validators.js';
-import { Register, Login, myProfile, Logout } from '../controllers/userController.js';
-import { isAuthenticated } from '../middlewares/auth.js';
+import { Register, Login, myProfile, Logout, AllUsers } from '../controllers/userController.js';
+import { isAdmin, isAuthenticated } from '../middlewares/auth.js';
 
 const router = express.Router();
 
@@ -14,5 +14,7 @@ router.post('/login', validateLogin, is_Request_Validated, Login);
 router.get('/me', isAuthenticated, myProfile);
 router.get('/logout', isAuthenticated, Logout);
 
+// Admin Routes
+router.get('/admin/users', isAuthenticated, isAdmin, AllUsers);
 
 export default router;

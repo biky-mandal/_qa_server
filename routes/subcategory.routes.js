@@ -1,6 +1,6 @@
 import express from "express";
-import { isAuthenticated } from "../middlewares/auth.js";
-import { createSubCategory, fetchSubCategories } from '../controllers/subCategoryController.js'
+import { isAdmin, isAuthenticated } from "../middlewares/auth.js";
+import { allSubCategories, createSubCategory, fetchSubCategories } from '../controllers/subCategoryController.js'
 
 const router = express.Router();
 

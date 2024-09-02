@@ -5,8 +5,7 @@ import { ErrorHandler, TryCatch } from "../middlewares/error.js";
 
 const Register = TryCatch(async (req, res, next) => {
     const { name, email, password, role } = req.body;
-    const user = await User.create({ name, email, password, role });
-
+    const user = await User.create({ name, email, password, role, coins: 0 });
     sendToken(res, user, 201, 'User created!');
 })
 
@@ -42,4 +41,16 @@ const Logout = TryCatch(async (req, res, next) => {
         message: 'Logout Successfully!',
     });
 })
-export { Register, Login, myProfile, Logout };
+
+// Admin Route
+const AllUsers = TryCatch(async (req, res, next) => {
+
+    const users = await User.find({});
+
+    res.status(200).json({
+        success: true,
+        users
+    })
+})
+
+export { Register, Login, myProfile, Logout, AllUsers };

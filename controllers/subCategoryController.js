@@ -31,4 +31,15 @@ const fetchSubCategories = TryCatch(async (req, res, next) => {
     })
 })
 
-export { createSubCategory, fetchSubCategories }
+
+const allSubCategories = TryCatch(async (req, res, next) => {
+
+    let _subcategories = await Category.find({});
+
+    res.status(200).json({
+        success: true,
+        subcategories: _subcategories
+    })
+})
+
+export { createSubCategory, fetchSubCategories, allSubCategories }
