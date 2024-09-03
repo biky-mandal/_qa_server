@@ -42,4 +42,14 @@ const allCategoriesWithSubCategories = TryCatch(async (req, res, next) => {
     })
 })
 
-export { createCategory, fetchCategories, allCategoriesWithSubCategories }
+const deleteCategory = TryCatch(async (req, res, next) => {
+
+    const { _id } = req.query;
+    await Category.deleteOne({ _id: _id });
+
+    res.status(200).json({
+        success: true,
+        message: "Category Deleted!"
+    })
+})
+export { createCategory, fetchCategories, allCategoriesWithSubCategories, deleteCategory }
