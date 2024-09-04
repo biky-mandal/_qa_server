@@ -1,5 +1,7 @@
 import { TryCatch } from "../middlewares/error.js";
 import { Country } from "../models/country.js";
+import { State } from "../models/state.js";
+
 
 const addCountry = TryCatch(async (req, res, next) => {
     const { name, code } = req.body;
@@ -31,4 +33,16 @@ const fetchCountries = TryCatch(async (req, res, next) => {
     })
 })
 
-export { addCountry, fetchCountries }
+const countriesWithStates = TryCatch(async (req, res, next) => {
+
+    let _countries = await Country.find({});
+    let _states = await State.find().populate('country');
+
+    res.status(200).json({
+        success: true,
+        countries: _countries,
+        states: _states
+    })
+})
+
+export { addCountry, fetchCountries, countriesWithStates }
