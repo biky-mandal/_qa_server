@@ -3,11 +3,6 @@ import pkg from 'mongoose';
 const { Schema, model, models } = pkg;
 
 const schema = new Schema({
-    question: {
-        type: Schema.Types.ObjectId,
-        ref: 'Question',
-        required: true,
-    },
     key: {
         type: String,
         enum: ['A', 'B', 'C', 'D'],

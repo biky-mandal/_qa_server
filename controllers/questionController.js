@@ -7,20 +7,20 @@ const createQuestion = TryCatch(async (req, res, next) => {
         states, categories, subCategories, createdBy, updatedBy, key, description,
     } = req.body;
 
-    const _question = await Question.create({
-        value, options, eventDate, countries,
-        states, categories, subCategories, createdBy, updatedBy
-    });
+    const _ans = await Answer.create({
+        key,
+        description,
+        createdBy,
+        updatedBy
+    })
 
-    if (_question) {
-        await Answer.create({
-            question: _question._id,
-            key,
-            description,
-            createdBy,
-            updatedBy
-        })
+    if (_ans) {
+        const _question = await Question.create({
+            value, answer: _ans._id, options, eventDate, countries,
+            states, categories, subCategories, createdBy, updatedBy
+        });
     }
+
 
     res.status(201).json({
         success: true,
@@ -69,4 +69,16 @@ const fetchAnswerWithQId = TryCatch(async (req, res, next) => {
     })
 })
 
-export { createQuestion, fetchallQuestions, filterQuestions, fetchAnswerWithQId }
+const fetchallQuestionsAns = TryCatch(async (req, res, next) => {
+    let _questions = await Question.find().populate(['countries', 'answer', 'states', 'categories', 'subCategories', 'createdBy', 'updatedBy']);
+
+    if (!_questions) {
+        return next(new ErrorHandler("No Question Found", 404));
+    }
+    res.status(200).json({
+        success: true,
+        questions: _questions
+    })
+})
+
+export { createQuestion, fetchallQuestions, filterQuestions, fetchAnswerWithQId, fetchallQuestionsAns }

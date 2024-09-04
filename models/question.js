@@ -7,6 +7,10 @@ const schema = new Schema({
         type: String,
         required: true,
     },
+    answer: {
+        type: Schema.Types.ObjectId,
+        ref: 'Answer',
+    },
     options: [{
         key: {
             type: String,
@@ -19,7 +23,7 @@ const schema = new Schema({
         }
     }],
     eventDate: {
-        type: Date,
+        type: 'string',
         required: true,
     },
     countries: [{
