@@ -1,11 +1,17 @@
 import { ErrorHandler, TryCatch } from "../middlewares/error.js";
 import { Question } from "../models/question.js";
+import { User } from "../models/user.js";
 import { Answer } from "../models/answer.js";
 
 const createQuestion = TryCatch(async (req, res, next) => {
     const { value, options, eventDate, countries,
         states, categories, subCategories, createdBy, updatedBy, key, description,
     } = req.body;
+
+    const _user = await User.findById(createdBy);
+    const _coins = _user.coins + 5;
+
+    await User.findByIdAndUpdate(createdBy, { coins: _coins });
 
     const _ans = await Answer.create({
         key,
@@ -15,7 +21,7 @@ const createQuestion = TryCatch(async (req, res, next) => {
     })
 
     if (_ans) {
-        const _question = await Question.create({
+        await Question.create({
             value, answer: _ans._id, options, eventDate, countries,
             states, categories, subCategories, createdBy, updatedBy
         });
@@ -81,4 +87,21 @@ const fetchallQuestionsAns = TryCatch(async (req, res, next) => {
     })
 })
 
-export { createQuestion, fetchallQuestions, filterQuestions, fetchAnswerWithQId, fetchallQuestionsAns }
+const fetchQAByUser = TryCatch(async (req, res, next) => {
+    const createdBy = req.query.createdBy; // Extract 'createdBy' from query parameters
+
+    if (!createdBy) {
+        return next(new ErrorHandler("CreatedBy parameter is required", 400)); // Handle missing parameter case
+    }
+
+    let questions = await Question.find({ createdBy }).populate([
+        'countries', 'answer', 'states', 'categories', 'subCategories', 'createdBy', 'updatedBy'
+    ]);
+
+    res.status(200).json({
+        success: true,
+        questions
+    });
+});
+
+export { createQuestion, fetchallQuestions, filterQuestions, fetchAnswerWithQId, fetchallQuestionsAns, fetchQAByUser }

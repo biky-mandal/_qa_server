@@ -5,9 +5,9 @@ import { addCountry, countriesWithStates, fetchCountries } from "../controllers/
 const router = express.Router();
 
 router.get('/fetch', isAuthenticated, fetchCountries);
+router.get('/countries', isAuthenticated, countriesWithStates);
 
 // admin Routes
-router.get('/admin/countries', isAuthenticated, isAdmin, countriesWithStates);
 router.post('/admin/add', isAuthenticated, isAdmin, addCountry);
 
 

@@ -5,9 +5,9 @@ import { isAdmin, isAuthenticated } from "../middlewares/auth.js";
 const router = express.Router();
 
 router.get('/fetch', isAuthenticated, fetchCategories);
+router.get('/categories', isAuthenticated, allCategoriesWithSubCategories);
 
 // These are for Admin
-router.get('/admin/categories', isAuthenticated, isAdmin, allCategoriesWithSubCategories);
 router.post('/admin/create', isAuthenticated, isAdmin, createCategory);
 router.delete('/admin/delete', isAuthenticated, isAdmin, deleteCategory);
 
